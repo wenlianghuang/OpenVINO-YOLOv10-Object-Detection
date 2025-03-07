@@ -22,7 +22,7 @@ class YOLOv10_openvino:
         # Initialize OpenVINO model
         core = Core()
         self.model = core.read_model(model=path)
-        self.compiled_model = core.compile_model(model=self.model, device_name="GPU")
+        self.compiled_model = core.compile_model(model=self.model, device_name="NPU")
         self.input_layer = self.compiled_model.input(0)
         self.output_layer = self.compiled_model.output(0)
 
