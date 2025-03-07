@@ -5,12 +5,14 @@ from yolov10 import YOLOv10, draw_detections
 
 # Initialize yolov8 object detector
 model_path = "models/yolov10l.onnx"
-detector = YOLOv10(model_path, conf_thres=0.2)
+detector = YOLOv10(model_path, conf_thres=0.6)
 
 # Read image
-img_url = "https://github.com/ibaiGorordo/ONNX-YOLOv10-Object-Detection/blob/assets/assets/test.png?raw=true"
-img = imread_from_url(img_url)
-
+#img_url = "https://github.com/ibaiGorordo/ONNX-YOLOv10-Object-Detection/blob/assets/assets/test.png?raw=true"
+#img = imread_from_url(img_url)
+# Read image from local file
+img_path = './coco_bike.jpg'
+img = cv2.imread(img_path)
 # Detect Objects
 class_ids, boxes, confidences = detector(img)
 

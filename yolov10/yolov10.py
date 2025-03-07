@@ -15,8 +15,8 @@ class YOLOv10:
         check_model(path)
 
         # Initialize model
-        self.session = onnxruntime.InferenceSession(path, providers=onnxruntime.get_available_providers())
-
+        #self.session = onnxruntime.InferenceSession(path, providers=onnxruntime.get_available_providers())
+        self.session = onnxruntime.InferenceSession(path,providers=['OpenVINOExecutionProvider'])
         # Get model info
         self.get_input_details()
         self.get_output_details()
@@ -88,7 +88,7 @@ class YOLOv10:
         model_outputs = self.session.get_outputs()
         self.output_names = [model_outputs[i].name for i in range(len(model_outputs))]
 
-
+'''
 if __name__ == '__main__':
     from imread_from_url import imread_from_url
 
@@ -108,3 +108,4 @@ if __name__ == '__main__':
     cv2.namedWindow("Output", cv2.WINDOW_NORMAL)
     cv2.imshow("Output", combined_img)
     cv2.waitKey(0)
+'''
