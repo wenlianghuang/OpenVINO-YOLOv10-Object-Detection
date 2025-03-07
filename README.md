@@ -1,7 +1,7 @@
-# ONNX YOLOv10 Object Detection
+# OpenVINO YOLOv10 Object Detection
  Python scripts performing object detection using the YOLOv10 model in ONNX.
  
-![!ONNX YOLOv10 Object Detection](https://github.com/user-attachments/assets/a926d7d7-7ee5-474d-b90f-310ef874f0cb)
+![!OpenVINO YOLOv10 Object Detection](https://github.com/user-attachments/assets/a926d7d7-7ee5-474d-b90f-310ef874f0cb)
 
 > [!CAUTION]
 > I skipped adding the pad to the input image when resizing, which might affect the accuracy of the model if the input image has a different aspect ratio compared to the input size of the model. Always try to get an input size with a ratio close to the input images you will use.
@@ -18,16 +18,22 @@ pip install yolov10-onnx
 ```
 Or, clone this repository:
 ```bash
-git clone https://github.com/ibaiGorordo/ONNX-YOLOv10-Object-Detection.git
-cd ONNX-YOLOv10-Object-Detection
+git clone https://github.com/wenlianghuang/OpenVINO-YOLOv10-Object-Detection
+cd OpenVINO-YOLOv10-Object-Detection
 pip install -r requirements.txt
 ```
-### ONNX Runtime
-For Nvidia GPU computers:
-`pip install onnxruntime-gpu`
+### Convert ONNX to OpenVINO
+You python code to convert ONNX to OpenVINO with **.xml** and **.bin**
+```python
+from openvino import convert_model
+from openvino.runtime import serialize
 
-Otherwise:
-`pip install onnxruntime`
+# 轉換 YOLOv10 ONNX 模型
+ov_model = convert_model("yolov10n.onnx")
+
+# 儲存 OpenVINO IR 模型
+serialize(ov_model, "openvino_model/yolov10n.xml")
+```
 
 ## ONNX model
 - If the model file is not found in the models directory, it will be downloaded automatically from the [Official Repo](https://github.com/THU-MIG/yolov10/releases/tag/v1.1).

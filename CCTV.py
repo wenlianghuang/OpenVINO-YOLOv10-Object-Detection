@@ -1,6 +1,7 @@
 import cv2
 #from yolov10 import YOLOv10, draw_detections
-from yolov10.yolov10_openvino import YOLOv10_openvino, draw_detections
+from yolov10.yolov10_openvino import YOLOv10_openvino
+from yolov10.utils import draw_detections
 # Initialize yolov10 object detector
 model_path = "models/yolov10l.onnx"
 detector = YOLOv10_openvino(model_path, conf_thres=0.6)

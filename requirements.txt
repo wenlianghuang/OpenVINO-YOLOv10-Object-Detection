@@ -6,3 +6,5 @@ onnxruntime-silicon==1.16.3; sys_platform == 'darwin' and platform_machine == 'a
 onnxruntime-gpu==1.18.0; sys_platform != 'darwin'
 tqdm
 numpy==1.26.4
+openvino
+openvino-dev
