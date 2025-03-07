@@ -45,24 +45,35 @@ def check_model(model_path: str):
 
 
 def draw_detections(image, boxes, scores, class_ids, mask_alpha=0.3):
+    # Make a copy of the image to draw detections on
     det_img = image.copy()
 
+    # Get the height and width of the image
     img_height, img_width = image.shape[:2]
+    
+    # Calculate font size and text thickness based on image dimensions
     font_size = min([img_height, img_width]) * 0.0006
     text_thickness = int(min([img_height, img_width]) * 0.001)
 
+    # Draw masks on the image
     det_img = draw_masks(det_img, boxes, class_ids, mask_alpha)
 
     # Draw bounding boxes and labels of detections
     for class_id, box, score in zip(class_ids, boxes, scores):
+        # Get the color for the current class
         color = colors[class_id]
 
+        # Draw the bounding box
         draw_box(det_img, box, color)
 
+        # Create the label and caption for the detection
         label = class_names[class_id]
         caption = f'{label} {int(score * 100)}%'
+        
+        # Draw the text label on the image
         draw_text(det_img, caption, box, color, font_size, text_thickness)
 
+    # Return the image with detections drawn
     return det_img
 
 
@@ -74,28 +85,38 @@ def draw_box(image: np.ndarray, box: np.ndarray, color: tuple[int, int, int] = (
 
 def draw_text(image: np.ndarray, text: str, box: np.ndarray, color: tuple[int, int, int] = (0, 0, 255),
               font_size: float = 0.001, text_thickness: int = 2) -> np.ndarray:
+    # Extract coordinates from the bounding box
     x1, y1, x2, y2 = box.astype(int)
+    
+    # Get the text size
     (tw, th), _ = cv2.getTextSize(text=text, fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                                   fontScale=font_size, thickness=text_thickness)
+    
+    # Adjust text height
     th = int(th * 1.2)
 
-    cv2.rectangle(image, (x1, y1),
-                  (x1 + tw, y1 - th), color, -1)
+    # Draw a filled rectangle for the text background
+    cv2.rectangle(image, (x1, y1), (x1 + tw, y1 - th), color, -1)
 
+    # Put the text on the image
     return cv2.putText(image, text, (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, font_size, (255, 255, 255), text_thickness,
                        cv2.LINE_AA)
 
 
 def draw_masks(image: np.ndarray, boxes: np.ndarray, classes: np.ndarray, mask_alpha: float = 0.3) -> np.ndarray:
+    # Make a copy of the image to draw masks on
     mask_img = image.copy()
 
     # Draw bounding boxes and labels of detections
     for box, class_id in zip(boxes, classes):
+        # Get the color for the current class
         color = colors[class_id]
 
+        # Extract coordinates from the bounding box
         x1, y1, x2, y2 = box.astype(int)
 
-        # Draw fill rectangle in mask image
+        # Draw a filled rectangle in the mask image
         cv2.rectangle(mask_img, (x1, y1), (x2, y2), color, -1)
 
+    # Blend the mask image with the original image
     return cv2.addWeighted(mask_img, mask_alpha, image, 1 - mask_alpha, 0)
