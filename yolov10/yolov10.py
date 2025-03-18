@@ -15,8 +15,8 @@ class YOLOv10:
         check_model(path)
 
         # Initialize model
-        #self.session = onnxruntime.InferenceSession(path, providers=onnxruntime.get_available_providers())
-        self.session = onnxruntime.InferenceSession(path,providers=['OpenVINOExecutionProvider'])
+        self.session = onnxruntime.InferenceSession(path, providers=onnxruntime.get_available_providers())
+        #self.session = onnxruntime.InferenceSession(path,providers=['OpenVINOExecutionProvider'])
         # Get model info
         self.get_input_details()
         self.get_output_details()
